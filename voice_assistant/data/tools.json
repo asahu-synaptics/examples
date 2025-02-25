@@ -1,6 +1,6 @@
 [
     {
         "token": "{time}",
-        "command": "python3 ./src/time.py"
+        "command": "date"
     }
 ]
