@@ -107,7 +107,7 @@ def handle_results(text, inference_time):
         print(f"\033[93mSTT: {text} \033[92m({inference_time*1000:.0f}ms)\033[0m")
 
 pipe = SpeechToTextPipeline(
-    model="base",
+    model="base", # Set to "tiny" for faster but less accurate model
     handler=handle_results,
     echo=False  # Set echo True to play audio after recording ends for debug purposes
 )
