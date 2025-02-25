@@ -24,12 +24,21 @@ python3 speech-to-text/moonshine.py  'samples/jfk.wav'
 To run live captions with a USB microphones attached (hint: a webcam has a microphone):
 
 ```bash
-python3 speech-to-text/live_captions.py
+python3 speech-to-text/pipeline.py 
 ```
 
 # Text-to-speech
 
+```
+python3 text-to-speech/piper.py "synaptics astra example"
+```
+
+
 # Embeddings
+
+```
+ python3 embeddings/embeddings.py "synaptics astra example!"
+```
 
 ## Install llama-embedding
 ```
