@@ -1,54 +1,55 @@
-# Examples
-SyNAP demos, test applications and code snippets
+# Synaptics Astra AI examples
 
-## Current Examples
-| Example | Description |
-|---------|-------------|
-| [Real-time Video Inference](video_inference) | Python demos to run real-time video inference via GStreamer on camera, file, or RTSP sources. |
-| [Sending Inference Results over UDP](gst-udp-app) | GStreamer C++ application to send inference results over UDP in real-time. |
+In the following tutorials, we will run NPU-accelerated AI inference on Synaptics Astra using the `SynapRT` Python package.
 
-***
+![python](/img/python-logo-generic.svg)
 
-## Real-time Video Inference
-> [!IMPORTANT]
-> The firmware version on the SL1680 board must be >=1.0.0
+We will install SynapRT examples on our board and run through them in the following tutorial sections.
 
-### Running examples
-Clone the examples repository and navigate to the `video_inference` folder.
-All examples are located in the [`examples`](examples) sub-folder. There are specific examples for each supported input type (camera, file, RTSP) and a more generic example that's compatible with all supported inputs. To run an example:
-```sh
-python3 -m examples.<example>
-```
-#### Run options
-The examples can also be run with optional input arguments. Here's a few examples:
+In the Astra console window, type (or copy paste) the following to download the examples to your board:
 
-##### 1. Camera demo with pre-loaded pose model
-```sh
-python3 -m examples.infer_camera \
--m /usr/share/synap/models/object_detection/body_pose/model/yolov8s-pose/model.synap
+<InstallGuide item="examples" />
+
+We're going to use a Python virtual environment to keep any packages we install separate in order to avoid any version conflicts. This takes under a minute:
+
+```bash
+python3 -m venv .venv --system-site-packages
 ```
 
-##### 2. Fullscreen video demo on a specific video file
-```sh
-python3 -m examples.infer_video \
--i /home/root/video.mp4 \
---fullscreen
+:::info
+Specifying `--system-site-packages` means it copies across prebuilt Python packages on the Astra firmware image. 
+:::
+
+The we'll activate the virtual environment, which means any python packages we install will be kept in the local `.venv` directory:
+
+```
+source .venv/bin/activate
 ```
 
-##### 3. Generic demo with an input source, model and inference parameters
-```sh
-python3 -m examples.infer \
--i /home/root/video.mp4 \
--m /home/root/model.synap \
---input_codec h264 \
---confidence_threshold 0.85 \
---inference_skip 0
-```
+Your prompt should new look like: 
 
-The full list of available input options for each demo can be viewed with `python3 -m examples.<example>.py --help`.
+<pre>
+(.venv) root@sl1680:~/ew2025-workshop#
+</pre>
 
-### Building demos from examples
-The pyz_builder.py script allows you to package examples into self-contained, executable .pyz zip archives, which can be run using python3 <demo>.pyz. For step-by-step packaging instructions, see the [detailed guide on building demos](video_inference/README.md#building-demos-from-examples).
+Next, let's install the Python package dependencies:
 
-### Customizing and Extending Examples
-To learn how to modify and expand these examples for your specific needs, check out the [customization and extension guide](video_inference/README.md#customizing-and-extending-examples).
+<InstallGuide item="synap-python" />
+
+**Congraulations! You now have the tutorial examples installed on your Astra board.**
+
+
+
+:::note
+For the Embedded World workshop, we are hosting all workshop materials on a local server to ensure no connectivity issues.
+
+However, the Python package will be publicly available and simpler to install using `pip` in real-world development scenario.
+:::
+
+
+
+
+
+
+
+
