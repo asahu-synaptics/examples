@@ -7,10 +7,10 @@ from utils.audio_manager import AudioManager
 
 SAMPLING_RATE = 16000
 CHUNK_SIZE = 512    
-LOOKBACK_CHUNKS = 9
+LOOKBACK_CHUNKS = 7
 MAX_LINE_LENGTH = 80
 MAX_SPEECH_SECS = 15
-MIN_REFRESH_SECS = 0.2
+MIN_REFRESH_SECS = 0.5
 
 class SpeechToTextPipeline:
     def __init__(self, model, handler):
@@ -23,8 +23,8 @@ class SpeechToTextPipeline:
         self.vad_iterator = VADIterator(
             model=self.vad_model,
             sampling_rate=SAMPLING_RATE,
-            threshold=0.5,
-            min_silence_duration_ms=500,
+            threshold=0.3,
+            min_silence_duration_ms=300,
         )
 
         self.audio_manager = AudioManager()
@@ -106,7 +106,7 @@ def handle_results(text, inference_time):
 
 
 pipe = SpeechToTextPipeline(
-    model="tiny",
+    model="base",
     handler=handle_results,
 )
 
