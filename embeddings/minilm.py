@@ -1,12 +1,21 @@
-import subprocess
-import json
 import sys
 from huggingface_hub import hf_hub_download
-import os
+from llama_cpp import Llama
 
 class Embeddings:
     def __init__(self):
         self._download_model()
+        try:
+            self.llm = Llama(
+                model_path=self.model_path,
+                n_threads=4,
+                n_ctx=128,
+                n_batch=512,
+                embedding=True
+            )
+        except Exception as e:
+            print(f"Error loading model: {e}")
+            sys.exit(1)
 
     def _download_model(self):
         try:
@@ -17,49 +26,22 @@ class Embeddings:
             print(f"Model downloaded to: {self.model_path}")
         except Exception as e:
             print(f"Error downloading model: {e}")
-            exit(1)
+            sys.exit(1)
 
     def generate(self, text):
         try:
-            llama_bin_path = os.path.join('llama-embedding')
-            command = [
-                llama_bin_path,
-                '-m', self.model_path,
-                '-p', text,
-                '--ctx-size', '128',
-                '--batch-size', '512',
-                '--embd-output-format', 'json',
-                '-t', '4'
-            ]
-            result = subprocess.run(command, capture_output=True, text=True)
-
-            if result.returncode != 0:
-                print("Error: Llama-embedding command failed.")
-                print("Return code:", result.returncode)
-                print("Error output:", result.stderr)
-                raise RuntimeError(f"Llama-embedding command failed\n{command}")
-
-            if not result.stdout:
-                print("Error: No output from llama-embedding command.")
-                raise ValueError("No output from llama-embedding")
-
-            embedding_data = json.loads(result.stdout)
-            embedding = embedding_data.get('data', [{}])[0].get('embedding')
-
+            embedding = self.llm.embed(text)
             if embedding is None:
-                print("Error: Embedding data is missing in the output.")
-                raise ValueError("No embedding data found")
-
+                raise ValueError("No embedding returned")
             return embedding
-
         except Exception as e:
             print(f"Error generating embedding: {e}")
-            exit(1)
+            sys.exit(1)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python script.py \"text to embed\"")
-        exit(1)
+        sys.exit(1)
 
     input_text = sys.argv[1]
     generator = Embeddings()
