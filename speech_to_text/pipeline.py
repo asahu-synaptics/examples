@@ -4,8 +4,8 @@ import numpy as np
 from scipy.io.wavfile import write
 
 from silero_vad import VADIterator, load_silero_vad
-from moonshine import SpeechToText 
-from utils.audio_manager import AudioManager
+from speech_to_text.moonshine import SpeechToText 
+from speech_to_text.utils.audio_manager import AudioManager
 
 SAMPLING_RATE = 16000
 CHUNK_SIZE = 512    
@@ -101,15 +101,17 @@ class SpeechToTextPipeline:
                 elif (time.time() - start_time) > MIN_REFRESH_SECS:
                     start_time = time.time()
 
-# Example usage:
-def handle_results(text, inference_time):
-    if text:
-        print(f"\033[93mSTT: {text} \033[92m({inference_time*1000:.0f}ms)\033[0m")
 
-pipe = SpeechToTextPipeline(
-    model="base", # Set to "tiny" for faster but less accurate model
-    handler=handle_results,
-    echo=False  # Set echo True to play audio after recording ends for debug purposes
-)
+if __name__ == "__main__":
+    # Example usage:
+    def handle_results(text, inference_time):
+        if text:
+            print(f"\033[93mSTT: {text} \033[92m({inference_time*1000:.0f}ms)\033[0m")
 
-pipe.run()
+    pipe = SpeechToTextPipeline(
+        model="base", # Set to "tiny" for faster but less accurate model
+        handler=handle_results,
+        echo=False  # Set echo True to play audio after recording ends for debug purposes
+    )
+
+    pipe.run()

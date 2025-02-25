@@ -1,3 +1,5 @@
 .venv
 __*
 text-to-speech/output
+cached*
+*.wav

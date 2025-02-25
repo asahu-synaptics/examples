@@ -18,4 +18,4 @@ for chunk in response_stream:
     token = chunk["choices"][0].get("delta", {}).get("content", "")
     full_response += token
     print(token, end="", flush=True)
-print()  # Newline after the complete response
+print() 
