@@ -6,7 +6,7 @@ import time
 import numpy as np
 
 from silero_vad import VADIterator, load_silero_vad
-from transcribe import SpeechToText 
+from moonshine import SpeechToText 
 from utils.audio_manager import AudioManager
 
 SAMPLING_RATE = 16000

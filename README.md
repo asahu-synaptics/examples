@@ -18,7 +18,7 @@ pip install -r speech-to-text/requirements.txt
 To transcribe the `jfk.wav`
 
 ```bash
-python3 speech-to-text/transcribe.py  'samples/jfk.wav'
+python3 speech-to-text/moonshine.py  'samples/jfk.wav'
 ```
 
 To run live captions with a USB microphones attached (hint: a webcam has a microphone):
@@ -27,7 +27,15 @@ To run live captions with a USB microphones attached (hint: a webcam has a micro
 python3 speech-to-text/live_captions.py
 ```
 
+# Text-to-speech
 
+# Embeddings
+
+## Install llama-embedding
+```
+http://192.168.50.67/downloads/llama-embedding
+chmod u+x llama-embedding 
+```
 
 
 
