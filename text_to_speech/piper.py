@@ -35,7 +35,6 @@ class TextToSpeech:
             output_filename = os.path.join(self.output_dir, f"speech-output-{chk}.wav")
         
         if os.path.exists(output_filename):
-            print(f"Found cached audio file: {output_filename}")
             return output_filename
 
         voice_model_onnx, _ = self._download_model_files()

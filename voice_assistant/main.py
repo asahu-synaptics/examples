@@ -22,6 +22,7 @@ DISHWASHER_DATA = f'{DEMO_DIR}/data/dishwasher.json'
 
 ANSI_YELLOW = "\033[93m"
 ANSI_RESET = "\033[0m"
+ANSI_GREEN = "\033[92m"
 
 def file_checksum(content: str, hash_length: int = 16) -> str:
     return hashlib.sha256(content.encode()).hexdigest()[:hash_length]
@@ -125,7 +126,7 @@ class Agent:
         start_embedding = time.time()
         query_embedding = self.embeddings.generate(query)
         end_embedding = time.time()
-        print(f"{ANSI_YELLOW}Embedding Time: {(end_embedding - start_embedding) * 1000:.2f} ms{ANSI_RESET}")
+        print(f"{ANSI_YELLOW}Embedding: {ANSI_GREEN}{(end_embedding - start_embedding) * 1000:.2f} ms{ANSI_RESET}")
 
         if query_embedding is None:
             return "Sorry, I couldn't generate an embedding for your query."
@@ -217,7 +218,7 @@ if __name__ == "__main__":
             audio.play(wav_path)
 
     pipe = SpeechToTextPipeline(
-        model="base",  # "tiny" for faster but less accurate model
+        model="tiny",  # "tiny" for faster but less accurate model
         handler=handle_results,
         echo=False  # True for audio playback for debug
     )

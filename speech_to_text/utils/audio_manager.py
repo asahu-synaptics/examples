@@ -32,8 +32,7 @@ class AudioManager:
         """Play the audio file using the specified audio device."""
         if not self._device:
             raise RuntimeError("Audio device not set.")
-        print(f"Playing audio file: {filename} on device: {self._device}")
-        subprocess.run(["aplay", "-D", self._device, filename], check=True)
+        subprocess.run(["aplay", "-q", "-D", self._device, filename], check=True)
 
     def start_record(self, chunk_size=512):
         """Start the arecord subprocess."""

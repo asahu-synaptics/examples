@@ -7,6 +7,17 @@ python3 -m venv .venv --system-site-packages
 source .venv/bin/activate
 ```
 
+## Install sqlite python library for llama-cpp-python support
+```
+Also add sqlite3 binary:
+"_sqlite3.cpython-310-aarch64-linux-gnu.so" to astra location "/usr/lib/python3.10/lib-dynload/"
+Also add sqllite3 folder:
+"sqlite3" folder to astra location "/usr/lib/python3.10/"
+
+Run qwen:
+python3 llm/qwen.py
+```
+
 # Speech-to-text
 
 We'll be using Moonshine - an edge AI targetted speech-to-text model with Whisper-like Word Error Rate (WER).
