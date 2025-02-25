@@ -1,4 +1,5 @@
-import os
+"""" Moonshine Speech-to-Text model using ONNX runtime. """
+
 import sys
 import time
 import json
@@ -9,12 +10,12 @@ from huggingface_hub import hf_hub_download
 from tokenizers import Tokenizer
 
 class SpeechToText:
-    def __init__(self, model_name="base", onnx_repo="UsefulSensors/moonshine",
-                 config_repo="UsefulSensors/moonshine-base", rate=16000):
+    def __init__(self, model="base", onnx_repo="UsefulSensors/moonshine",
+                  rate=16000):
         
+        self.config_repo = f"UsefulSensors/moonshine-{model}"
         self.rate = rate
         self.onnx_repo = onnx_repo
-        self.config_repo = config_repo
 
         self.config = self._load_config()
         self.tokenizer = self._load_tokenizer()
@@ -22,12 +23,12 @@ class SpeechToText:
         encoder_path = hf_hub_download(
             repo_id=self.onnx_repo,
             filename="encoder_model.onnx",
-            subfolder="onnx/merged/base/quantized",
+            subfolder=f"onnx/merged/{model}/quantized",
         )
         decoder_path = hf_hub_download(
             repo_id=self.onnx_repo,
             filename="decoder_model_merged.onnx",
-            subfolder="onnx/merged/base/quantized",
+            subfolder=f"onnx/merged/{model}/quantized",
         )
         self.encoder_session = onnxruntime.InferenceSession(encoder_path)
         self.decoder_session = onnxruntime.InferenceSession(decoder_path)

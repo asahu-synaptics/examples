@@ -1,3 +1,5 @@
+""" Text-to-speech using Piper """
+
 import os
 import sys
 import hashlib
