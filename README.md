@@ -51,13 +51,8 @@ python3 -m text_to_speech.piper "synaptics astra example"
 python3 -m embeddings.minilm "synaptics astra example!"
 ```
 
-## Install llama-embedding
-```
-http://192.168.50.67/downloads/llama-embedding
-chmod u+x llama-embedding 
-```
 
-## Voice Assistant
+# Voice Assistant
 
 ```
 python3 -m voice_assistant.main

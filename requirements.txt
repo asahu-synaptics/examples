@@ -1,9 +1,10 @@
 numpy
 scikit-learn
 tqdm
-sounddevice
 silero-vad
 tokenizers
 pandas
 datetime
 soundfile
+llama-cpp-python
+huggingface-hub
