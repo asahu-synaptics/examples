@@ -2,7 +2,7 @@ import json
 import os
 import numpy as np
 import time
-import pandas as pd
+import csv
 from tqdm import tqdm
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -72,45 +72,67 @@ class Agent:
         intersection = sum((query_tokens & question_keywords).values())
         total = sum(query_tokens.values())
         return intersection / total if total > 0 else 0
-    
+
     def load_manual_data(self):
         """Load QA data from a JSON file, cache it as a TSV file, and extract keywords."""
         with open(BASE_QA, 'r') as file:
             base = json.load(file)
 
         with open(self.qa_file, 'r') as file:
-            file = json.load(file)
+            file_data = json.load(file)
 
-        manual_data = base['qa_pairs'] + file['qa_pairs']
-        self.valQuestions = file['validation']['questions']
-        self.valAnswers = file['validation']['answers']
-        self.voiceModel = file['voice']['onnx_file']
-        self.voiceJson = file['voice']['json_file']
-        self.threshold = file['threshold']
+        manual_data = base['qa_pairs'] + file_data['qa_pairs']
+        self.valQuestions = file_data['validation']['questions']
+        self.valAnswers = file_data['validation']['answers']
+        self.voiceModel = file_data['voice']['onnx_file']
+        self.voiceJson = file_data['voice']['json_file']
+        self.threshold = file_data['threshold']
 
         # Pre-extract keywords for all questions
         for pair in manual_data:
             pair['keywords'] = Counter(self.preprocess_text(pair['question']))
 
-        qa_df = pd.DataFrame(manual_data)
-        qa_df.to_csv(f'{DEMO_DIR}/cached/metadata.tsv', index=False, header=True, sep='\t')
+        # Save the metadata as TSV using csv module
+        cached_dir = f'{DEMO_DIR}/cached'
+        if not os.path.exists(cached_dir):
+            os.makedirs(cached_dir)
+        metadata_file = f'{cached_dir}/metadata.tsv'
+        # Determine all keys from the first pair (assumes all pairs share the same keys)
+        fieldnames = list(manual_data[0].keys())
+        with open(metadata_file, 'w', newline='', encoding='utf-8') as tsvfile:
+            writer = csv.DictWriter(tsvfile, fieldnames=fieldnames, delimiter='\t')
+            writer.writeheader()
+            for row in manual_data:
+                # Convert Counter to a dict of strings
+                row_copy = dict(row)
+                if isinstance(row_copy.get('keywords'), Counter):
+                    row_copy['keywords'] = dict(row_copy['keywords'])
+                writer.writerow(row_copy)
 
         return manual_data
 
     def load_embeddings(self, qa_pairs):
         """Load or generate embeddings for QA pairs."""
-        filename = f'{DEMO_DIR}/cached/vectors-{file_checksum(json.dumps(qa_pairs, sort_keys=True))}.tsv'
+        # Create a checksum based on sorted JSON data of qa_pairs
+        checksum = file_checksum(json.dumps(qa_pairs, sort_keys=True))
+        filename = f'{DEMO_DIR}/cached/vectors-{checksum}.tsv'
 
         if os.path.exists(filename):
-            embeddings = pd.read_csv(filename, sep='\t', header=None).values
-            return embeddings
+            try:
+                embeddings = np.loadtxt(filename, delimiter='\t')
+                # In case there's only one embedding, make sure it is 2D.
+                if embeddings.ndim == 1:
+                    embeddings = np.expand_dims(embeddings, axis=0)
+                return embeddings
+            except Exception as e:
+                print("Failed to load embeddings, generating new ones.", e)
 
         print("Generating question embeddings...")
         questions = [pair["question"] + " " + pair["answer"] for pair in qa_pairs]
         question_embeddings = np.array([self.embeddings.generate(q) for q in tqdm(questions)])
 
-        embedding_df = pd.DataFrame(question_embeddings)
-        embedding_df.to_csv(filename, sep='\t', index=False, header=False)
+        # Save embeddings using numpy.savetxt
+        np.savetxt(filename, question_embeddings, delimiter='\t')
 
         return question_embeddings
 
@@ -201,7 +223,6 @@ class Agent:
             "confidence": similarity
         }
     
-
 
 if __name__ == "__main__":
     print("Loading agent...")
