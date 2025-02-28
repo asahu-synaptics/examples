@@ -12,9 +12,8 @@ def download(repo_id, filename):
     local_file = os.path.join(base_dir, repo_id, filename)
     os.makedirs(os.path.dirname(local_file), exist_ok=True)
     
-    logger.debug(f"Checking if file exists locally at: {local_file}")
     if os.path.exists(local_file):
-        logger.debug(f"File found. Model already exists locally at: {local_file}")
+        logger.debug(f"Model found locally at: {local_file}")
         return local_file
 
     local_server = os.environ.get('SYNAPTICS_SERVER_IP', '192.168.50.10')
@@ -22,21 +21,18 @@ def download(repo_id, filename):
     logger.debug(f"Constructed URL: {url}")
     
     try:
-        logger.debug("Sending GET request to local Synaptics server.")
         r = requests.get(url, timeout=5)
-        logger.debug(f"Received response with status code: {r.status_code}")
         if r.status_code == 200:
-            logger.debug("Status 200 OK. Writing content to local file.")
             with open(local_file, 'wb') as f:
                 f.write(r.content)
-            logger.debug("File written successfully.")
+            logger.debug("File downloaded from local server.")
             return local_file
         else:
             logger.debug(f"Local server error (status: {r.status_code}). Falling back to Hugging Face.")
     except Exception as e:
         logger.debug(f"Error fetching from local server: {e}.")
 
-    logger.debug("Attempting to download model from Hugging Face Hub.")
+    logger.debug("\033[93mAttempting to download model from Hugging Face Hub.\033[0m")
     # Download directly to the desired location.
     downloaded_file = hf_hub_download(
         repo_id=repo_id,

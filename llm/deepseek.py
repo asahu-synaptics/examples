@@ -6,7 +6,6 @@ model_path = download(
 	filename="DeepSeek-R1-Distill-Qwen-1.5B-Q6_K.gguf",
 )    
 
-
 llm = Llama(
 	model_path=model_path,
     verbose=True, 
