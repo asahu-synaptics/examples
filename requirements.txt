@@ -8,3 +8,4 @@ datetime
 soundfile
 llama-cpp-python
 huggingface-hub
+piper-tts

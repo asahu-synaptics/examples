@@ -1,9 +1,14 @@
 from llama_cpp import Llama
+from utils.models import download
 
-# Load the model
-llm = Llama.from_pretrained(
+model_path = download(
 	repo_id="bartowski/DeepSeek-R1-Distill-Qwen-1.5B-GGUF",
 	filename="DeepSeek-R1-Distill-Qwen-1.5B-Q6_K.gguf",
+)    
+
+
+llm = Llama(
+	model_path=model_path,
     verbose=True, 
     n_ctx=8196,
 	n_threads=4,

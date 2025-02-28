@@ -201,8 +201,6 @@ class Agent:
             "confidence": similarity
         }
     
-
-
 if __name__ == "__main__":
     print("Loading agent...")
     agent = Agent()
@@ -218,7 +216,7 @@ if __name__ == "__main__":
             audio.play(wav_path)
 
     pipe = SpeechToTextPipeline(
-        model="tiny",  # "tiny" for faster but less accurate model
+        model="base",  # "tiny" for faster but less accurate model
         handler=handle_results,
         echo=False  # True for audio playback for debug
     )

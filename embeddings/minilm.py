@@ -4,10 +4,9 @@ from utils.models import download
 
 class Embeddings:
     def __init__(self):
-
         self.model_path = download(
             repo_id="second-state/All-MiniLM-L6-v2-Embedding-GGUF",
-            file_path="all-MiniLM-L6-v2-Q8_0.gguf"
+            filename="all-MiniLM-L6-v2-Q8_0.gguf"
         )
 
         self.llm = Llama(
@@ -17,7 +16,6 @@ class Embeddings:
             n_batch=512,
             embedding=True
         )
-
 
     def generate(self, text):
         try:
