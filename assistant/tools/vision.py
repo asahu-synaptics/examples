@@ -90,7 +90,7 @@ def main():
         return
 
     clf = ImageClassifier()
-    best_label = clf.infer(photo_file)
+    best_label = clf.infer(photo_file).split(',')[0]
     print(best_label)
 
 if __name__ == "__main__":
