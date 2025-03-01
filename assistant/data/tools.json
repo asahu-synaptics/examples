@@ -2,5 +2,9 @@
     {
         "token": "{time}",
         "command": "date"
+    },
+    {
+        "token": "{vision}",
+        "command": "python3 assistant/tools/vision.py"
     }
 ]

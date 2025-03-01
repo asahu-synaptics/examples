@@ -49,7 +49,7 @@ python3 -m embeddings.minilm "synaptics astra example!"
 
 ## Voice Assistant
 ```bash
-python3 -m voice_assistant.main
+python3 -m assistant.text
 ```
 
 ## LLMs

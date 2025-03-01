@@ -464,7 +464,7 @@
         "answer": "{joke}"
     },
     {
-        "question": "Show me the system status",
-        "answer": "{status}"
+        "question": "What can you see?",
+        "answer": "I can see a {vision}"
     }
 ]

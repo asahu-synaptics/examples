@@ -2,11 +2,9 @@ import json
 import sys
 from synapRT.pipelines import pipeline
 
-
 def load_labels(labels_file) -> list[str]:
     with open(labels_file, "r") as f:
         return json.load(f)["labels"]
-
 
 def handle_results(results, inference_time):
     results = results["top_n"]
