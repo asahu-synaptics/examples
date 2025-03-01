@@ -7,7 +7,7 @@ from synap import Network
 from synap.preprocessor import Preprocessor
 from synap.postprocessor import Classifier
 
-MODEL_PATH = "/usr/share/synap/models/image_classification/imagenet/model/mobilenet_v1_0.25_224_quant/model.synap"
+MODEL_PATH = "/usr/share/synap/models/image_classification/imagenet/model/mobilenet_v2_1.0_224_quant/model.synap"
 LABELS_FILE = "/usr/share/synap/models/image_classification/imagenet/info.json"
 
 def capture_photo(device="/dev/video7", filename="captured.jpg"):

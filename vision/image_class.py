@@ -18,7 +18,7 @@ def handle_results(results, inference_time):
 
 
 if __name__ == "__main__":
-    model = "/usr/share/synap/models/image_classification/imagenet/model/mobilenet_v1_0.25_224_quant/model.synap"
+    model = "/usr/share/synap/models/image_classification/imagenet/model/mobilenet_v2_1.0_224_quant/model.synap"
     image = "/usr/share/synap/models/image_classification/imagenet/sample/space_shuttle_224x224.jpg"
     labels = load_labels("/usr/share/synap/models/image_classification/imagenet/info.json")
 
