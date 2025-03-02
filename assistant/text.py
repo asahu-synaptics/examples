@@ -3,7 +3,7 @@ import os
 import numpy as np
 from tqdm import tqdm
 from sklearn.metrics.pairwise import cosine_similarity
-from embeddings.minilm import Embeddings
+from embeddings.multilingual import Embeddings
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "qa_pairs.json")
 
