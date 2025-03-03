@@ -41,9 +41,10 @@ wget https://synaptics-astra-labs.s3.us-east-1.amazonaws.com/downloads/sqlite3_3
 wget https://synaptics-astra-labs.s3.us-east-1.amazonaws.com/downloads/python3-sqlite3_3.10.13-r0_arm64.deb
 dpkg -i python3-sqlite3_3.10.13-r0_arm64.deb sqlite3_3.38.5-r0_arm64.deb
 ```
-Install `llama-cpp-python`
+Install `llama-cpp-python` prebuilt
 ```
-pip install -r llama-cpp-python
+pip install llama-cpp-python \
+  --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
 ```
 
 ## Embeddings
