@@ -55,8 +55,8 @@ class ImageClassifier:
             return json.load(f)["labels"]
 
     def infer(self, image_path):
-        # print("Net:", MODEL_PATH)
-        # print("Img:", image_path)
+        print("Net:", MODEL_PATH)
+        print("Img:", image_path)
 
         t0 = time.time()
         self.preprocessor.assign(self.network.inputs, image_path)
@@ -71,12 +71,12 @@ class ImageClassifier:
         t_post = 1000 * (time.time() - t0)
 
         tot = t_pre + t_inf + t_post
-        # print(f"Time: {tot:.3f} ms ", end="")
-        # print(f"(pre: {t_pre * 1000:.3f} us, inf: {t_inf * 1000:.3f} us, post: {t_post * 1000:.3f} us)")
+        print(f"Time: {tot:.3f} ms ", end="")
+        print(f"(pre: {t_pre * 1000:.3f} us, inf: {t_inf * 1000:.3f} us, post: {t_post * 1000:.3f} us)")
 
-        # print("\nClass  Conf   Desc")
-        # for item in result.items:
-        #     print(f"{item.class_index:5d}{item.confidence:12.4f}  {self.labels[item.class_index]}")
+        print("\nClass  Conf   Desc")
+        for item in result.items:
+            print(f"{item.class_index:5d}{item.confidence:12.4f}  {self.labels[item.class_index]}")
         
         if result.items:
             best = result.items[0]
