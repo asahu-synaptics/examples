@@ -8,5 +8,6 @@ datetime
 soundfile
 huggingface-hub
 piper-tts
+websocket-server
+llama-cpp-python
 synap-python
-synap-rt
