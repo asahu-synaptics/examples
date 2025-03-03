@@ -1,4 +1,5 @@
 numpy<2.0.0
+opencv-python-headless
 scikit-learn==1.6.1
 tqdm
 silero-vad
