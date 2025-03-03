@@ -51,7 +51,7 @@ pip install -r llama-cpp-python
 python3 -m embeddings.minilm "synaptics astra example!"
 ```
 
-## Voice Assistant
+## Text Assistant
 ```bash
 python3 -m assistant.text
 ```
