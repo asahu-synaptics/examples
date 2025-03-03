@@ -33,9 +33,11 @@ python3 -m speech_to_text.pipeline
 python3 -m text_to_speech.piper "synaptics astra example"
 ```
 
+# LLMs and embeddings examples
+
 ## Install llama-cpp-python
 
-Install sqlite3
+Install sqlite3 (OOBE v1.5 and below)
 ```bash
 wget https://synaptics-astra-labs.s3.us-east-1.amazonaws.com/downloads/sqlite3_3.38.5-r0_arm64.deb
 wget https://synaptics-astra-labs.s3.us-east-1.amazonaws.com/downloads/python3-sqlite3_3.10.13-r0_arm64.deb

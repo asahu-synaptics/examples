@@ -4,8 +4,11 @@ import numpy as np
 
 class AudioManager:
     def __init__(self, record_device=None, play_device=None, sample_rate=16000):
-        self._play_device = play_device or self._get_usb_play_device()
+        # For recording, we wait until a USB device is available
         self._record_device = record_device or self._get_usb_record_device()
+        # For playback, we check if a USB device is available;
+        # if not, we warn and set it to None (optional)
+        self._play_device = play_device or self._get_usb_play_device()
         self._sample_rate = sample_rate
         self.arecord_process = None
 
@@ -40,9 +43,13 @@ class AudioManager:
         self._sample_rate = new_sample_rate
 
     def play(self, filename):
-        """Play the audio file using the playback device."""
+        """Play the audio file using the playback device.
+        
+        If no playback device is available, warn and skip audio playback.
+        """
         if not self._play_device:
-            raise RuntimeError("Playback device not set.")
+            print("Warning: No playback device available. Skipping audio playback.")
+            return
         print(f"Playing through: {self._play_device}")
         subprocess.run(["aplay", "-q", "-D", self._play_device, filename], check=True)
 
@@ -82,6 +89,7 @@ class AudioManager:
             output = process.read()
             process.close()
             if 'USB Audio' in output:
+                print("Playback device detected:")
                 print(output)
                 break
 
@@ -93,12 +101,13 @@ class AudioManager:
             output = process.read()
             process.close()
             if 'USB Audio' in output:
+                print("Record device detected:")
                 print(output)
                 break
 
     def _get_usb_play_device(self):
         """Find the USB playback device using `aplay -l`."""
-        self.wait_for_play_audio()
+        # self.wait_for_play_audio()
         try:
             result = subprocess.run(["aplay", "-l"], capture_output=True, text=True, check=True)
             lines = result.stdout.splitlines()
