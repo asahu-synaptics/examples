@@ -35,11 +35,15 @@ python3 -m text_to_speech.piper "synaptics astra example"
 
 ## Install llama-cpp-python
 
+Install sqlite3
 ```bash
-Also add sqlite3 binary:
-"_sqlite3.cpython-310-aarch64-linux-gnu.so" to astra location "/usr/lib/python3.10/lib-dynload/"
-Also add sqllite3 folder:
-"sqlite3" folder to astra location "/usr/lib/python3.10/"
+wget https://synaptics-astra-labs.s3.us-east-1.amazonaws.com/downloads/sqlite3_3.38.5-r0_arm64.deb
+wget https://synaptics-astra-labs.s3.us-east-1.amazonaws.com/downloads/python3-sqlite3_3.10.13-r0_arm64.deb
+dpkg -i python3-sqlite3_3.10.13-r0_arm64.deb sqlite3_3.38.5-r0_arm64.deb
+```
+Install `llama-cpp-python`
+```
+pip install -r llama-cpp-python
 ```
 
 ## Embeddings
