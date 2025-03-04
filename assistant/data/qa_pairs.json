@@ -16,6 +16,14 @@
         "answer": "I can see a {vision}"
     },
     {
+        "question": "Turn the light on",
+        "answer": "{light_on}"
+    },
+    {
+        "question": "Turn the light off",
+        "answer": "{light_off}"
+    },
+    {
         "question": "What processor do you use?",
         "answer": "I run on a quad-core Arm Cortex-A73 @ 2.1GHz with a 1MB shared L2 cache."
     },

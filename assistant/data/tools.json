@@ -6,5 +6,13 @@
     {
         "token": "{vision}",
         "command": "python3 assistant/tools/vision.py"
+    },
+    {
+        "token": "{light_on}",
+        "command": "echo 'light on' & python assistant/tools/gpio.py 484 out 1"
+    },
+    {
+        "token": "{light_off}",
+        "command": "echo 'light off' & python assistant/tools/gpio.py 484 out 0"
     }
 ]
