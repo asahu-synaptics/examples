@@ -17,7 +17,7 @@ class Agent:
         self.question_embeddings = self.load_embeddings()
     
     def load_embeddings(self):
-        texts = [pair["question"] + " " + pair["answer"] for pair in self.qa_pairs]
+        texts = [pair["question"] for pair in self.qa_pairs]
         embeddings = []
         for text in tqdm(texts, desc="Computing embeddings"):
             embeddings.append(self.embeddings.generate(text))
