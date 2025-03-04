@@ -1,16 +1,13 @@
 
 from synapRT.pipelines import pipeline
-from utils.websockets import WebSockets
 import json
 import sys
 
 def main():
-    ws_server = WebSockets(port=6789)
-    ws_server.start()
-
     def handle_results(results, inference_time):
-        message = json.dumps(results)
-        ws_server.broadcast(message)
+        message = json.dumps(results, indent=4)
+        print(message)
+        print(f"Inference Time: {inference_time:.0f} ms")
 
     pipe = pipeline(
         task="object-detection",
@@ -19,7 +16,7 @@ def main():
         handler=handle_results,
     )
 
-    print("Starting Object Dectection Stream.")
+    print("Starting Object Detection Stream.")
     pipe(sys.argv[1])
 
 if __name__ == "__main__":

@@ -40,7 +40,7 @@ def get_camera_devices(cam_subsys: str = "video4linux") -> list[str]:
 
     return camera_paths
 
-def capture_photo(device=None, filename="out.jpg"):
+def capture(device=None, filename="out.jpg"):
     try:
         device = device or get_camera_devices()[0]
     except IndexError:
@@ -77,4 +77,4 @@ def capture_photo(device=None, filename="out.jpg"):
         return False
 
 if __name__ == "__main__":
-    capture_photo()
+    capture()
