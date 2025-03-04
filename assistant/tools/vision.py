@@ -6,43 +6,10 @@ import sys
 from synap import Network
 from synap.preprocessor import Preprocessor
 from synap.postprocessor import Classifier
+from utils.photo import capture_photo
 
 MODEL_PATH = "/usr/share/synap/models/image_classification/imagenet/model/mobilenet_v2_1.0_224_quant/model.synap"
 LABELS_FILE = "/usr/share/synap/models/image_classification/imagenet/info.json"
-
-def capture_photo(device="/dev/video7", filename="captured.jpg", debug=False):
-    # Set video format to MJPG at 640x480.
-    fmt_cmd = [
-        "v4l2-ctl",
-        f"--device={device}",
-        "--set-fmt-video=width=640,height=480,pixelformat=MJPG"
-    ]
-    try:
-        subprocess.run(fmt_cmd, capture_output=True, text=True, check=True)
-    except subprocess.CalledProcessError as e:
-        if debug:
-            print("Error in set format:")
-            print(e.stderr)
-        return False
-
-    # Capture one frame.
-    capture_cmd = [
-        "v4l2-ctl",
-        f"--device={device}",
-        "--stream-mmap",
-        "--stream-count=1",
-        f"--stream-to={filename}"
-    ]
-    try:
-        subprocess.run(capture_cmd, capture_output=True, text=True, check=True)
-        if debug:
-            print(f"Image saved as {filename}")
-        return True
-    except subprocess.CalledProcessError as e:
-        if debug:
-            print("Error in capture:")
-            print(e.stderr)
-        return False
 
 class ImageClassifier:
     def __init__(self, model_path=MODEL_PATH, labels_file=LABELS_FILE, top_count=5, debug=False):
@@ -89,13 +56,12 @@ class ImageClassifier:
         return None
 
 def main():
-    debug = '--debug' in sys.argv
     photo_file = "out.jpg"
-    if not capture_photo(filename=photo_file, debug=debug):
+    if not capture_photo(filename=photo_file):
         print("Photo capture failed.")
         return
 
-    clf = ImageClassifier(debug=debug)
+    clf = ImageClassifier()
     best_label = clf.infer(photo_file).split(',')[0]
     print(best_label)
 

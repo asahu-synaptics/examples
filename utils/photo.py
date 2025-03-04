@@ -24,7 +24,7 @@ def capture_photo(device="/dev/video7", filename="out.jpg"):
     ]
     try:
         subprocess.run(capture_cmd, capture_output=True, text=True, check=True)
-        print(f"Image saved as {filename}")
+        # print(f"Image saved as {filename}")
         return True
     except subprocess.CalledProcessError as e:
         print("Error capturing image:")
