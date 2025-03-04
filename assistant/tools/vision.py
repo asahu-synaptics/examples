@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
 import subprocess
 import json
 import os
 import time
+import sys
 from synap import Network
 from synap.preprocessor import Preprocessor
 from synap.postprocessor import Classifier
@@ -10,7 +10,7 @@ from synap.postprocessor import Classifier
 MODEL_PATH = "/usr/share/synap/models/image_classification/imagenet/model/mobilenet_v2_1.0_224_quant/model.synap"
 LABELS_FILE = "/usr/share/synap/models/image_classification/imagenet/info.json"
 
-def capture_photo(device="/dev/video7", filename="captured.jpg"):
+def capture_photo(device="/dev/video7", filename="captured.jpg", debug=False):
     # Set video format to MJPG at 640x480.
     fmt_cmd = [
         "v4l2-ctl",
@@ -20,8 +20,9 @@ def capture_photo(device="/dev/video7", filename="captured.jpg"):
     try:
         subprocess.run(fmt_cmd, capture_output=True, text=True, check=True)
     except subprocess.CalledProcessError as e:
-        print("Error in set format:")
-        print(e.stderr)
+        if debug:
+            print("Error in set format:")
+            print(e.stderr)
         return False
 
     # Capture one frame.
@@ -34,30 +35,34 @@ def capture_photo(device="/dev/video7", filename="captured.jpg"):
     ]
     try:
         subprocess.run(capture_cmd, capture_output=True, text=True, check=True)
-        # print(f"Image saved as {filename}")
+        if debug:
+            print(f"Image saved as {filename}")
         return True
     except subprocess.CalledProcessError as e:
-        print("Error in capture:")
-        print(e.stderr)
+        if debug:
+            print("Error in capture:")
+            print(e.stderr)
         return False
 
 class ImageClassifier:
-    def __init__(self, model_path=MODEL_PATH, labels_file=LABELS_FILE, top_count=5):
+    def __init__(self, model_path=MODEL_PATH, labels_file=LABELS_FILE, top_count=5, debug=False):
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"'{model_path}' not found")
         self.labels = self.load_labels(labels_file)
         self.network = Network(model_path)
         self.preprocessor = Preprocessor()
         self.classifier = Classifier(top_count=top_count)
+        self.debug = debug
 
     def load_labels(self, labels_file):
         with open(labels_file, "r") as f:
             return json.load(f)["labels"]
 
     def infer(self, image_path):
-        print("Net:", MODEL_PATH)
-        print("Img:", image_path)
-
+        if self.debug:
+            print("Net:", MODEL_PATH)
+            print("Img:", image_path)
+        
         t0 = time.time()
         self.preprocessor.assign(self.network.inputs, image_path)
         t_pre = 1000 * (time.time() - t0)
@@ -71,12 +76,12 @@ class ImageClassifier:
         t_post = 1000 * (time.time() - t0)
 
         tot = t_pre + t_inf + t_post
-        print(f"Time: {tot:.3f} ms ", end="")
-        print(f"(pre: {t_pre * 1000:.3f} us, inf: {t_inf * 1000:.3f} us, post: {t_post * 1000:.3f} us)")
-
-        print("\nClass  Conf   Desc")
-        for item in result.items:
-            print(f"{item.class_index:5d}{item.confidence:12.4f}  {self.labels[item.class_index]}")
+        if self.debug:
+            print(f"Time: {tot:.3f} ms ", end="")
+            print(f"(pre: {t_pre:.3f} ms, inf: {t_inf:.3f} ms, post: {t_post:.3f} ms)")
+            print("\nClass  Conf   Desc")
+            for item in result.items:
+                print(f"{item.class_index:5d}{item.confidence:12.4f}  {self.labels[item.class_index]}")
         
         if result.items:
             best = result.items[0]
@@ -84,12 +89,13 @@ class ImageClassifier:
         return None
 
 def main():
+    debug = '--debug' in sys.argv
     photo_file = "out.jpg"
-    if not capture_photo(filename=photo_file):
+    if not capture_photo(filename=photo_file, debug=debug):
         print("Photo capture failed.")
         return
 
-    clf = ImageClassifier()
+    clf = ImageClassifier(debug=debug)
     best_label = clf.infer(photo_file).split(',')[0]
     print(best_label)
 
