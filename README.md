@@ -96,12 +96,19 @@ dpkg -i python3-sqlite3_3.10.13-r0_arm64.deb sqlite3_3.38.5-r0_arm64.deb
 ```
 
 #### 🦙 Install `llama-cpp-python`
-This command installs a prebuilt version of **llama-cpp-python**, which enables running large language models efficiently:
+
+This command installs **llama-cpp-python**, which enables running large language models efficiently:
 ```bash
+pip install llama-cpp-python
+```
+
+There is also a prebuilt version, this installs faster but lags version and may not support newer models (e.g. deepseek)
+```
 pip install llama-cpp-python   --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
 ```
 
-Run large language models such as **Qwen** and **DeepSeek**:
+To run large language models such as **Qwen** and **DeepSeek**:
+
 ```bash
 python3 -m llm.qwen
 #python3 -m llm.deepseek
