@@ -56,14 +56,16 @@ class SpeechToTextPipeline:
         start_inference = time.time()
         text = self.speech_to_text.transcribe(self.speech)
         inference_time = time.time() - start_inference
-        self.handler(text, inference_time)
+
+        if text.strip():
+            self.handler(text, inference_time)
         
         max_val = np.max(np.abs(self.speech))
         if max_val != 0:
             scaled = np.int16(self.speech / max_val * 32767)
         else:
             scaled = np.int16(self.speech)
-        write(OUTPUT_FILE,  SAMPLING_RATE, scaled)
+        write(OUTPUT_FILE, SAMPLING_RATE, scaled)
         
         if self.echo:
             self.audio_manager.play(OUTPUT_FILE)
