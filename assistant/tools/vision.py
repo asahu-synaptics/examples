@@ -3,6 +3,7 @@ import json
 import os
 import time
 import sys
+import warnings
 from synap import Network
 from synap.preprocessor import Preprocessor
 from synap.postprocessor import Classifier
@@ -49,7 +50,7 @@ def get_camera_devices(cam_subsys: str = "video4linux") -> list[str]:
 
     return camera_paths
 
-def capture_photo(device=None, filename="out.jpg"):
+def capture_photo(device=None, filename="/dev/shm/out.jpg"):
     try:
         device = device or get_camera_devices()[0]
     except IndexError:
