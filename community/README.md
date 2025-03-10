@@ -1,4 +1,5 @@
 # Astra Application Challenge 
+![Challenge](/samples/community.png)
 
 
 ##  Submit Your Project & Get Featured!  
