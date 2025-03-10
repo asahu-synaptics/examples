@@ -6,11 +6,13 @@
 
 This is your opportunity to build something creative and impactful using Astra. Something completely new that we haven’t thought of!
 
-Submit your project and have your work featured in our  Official GitHub [Examples repo](https://github.com/synaptics-synap/examples).  
+Submit your project link and have your work featured in our Official GitHub [Examples repo](https://github.com/synaptics-synap/examples).  
 
 🏆  We will pick 1 winner in each category  and  feature their project in our  [Examples repo](https://github.com/synaptics-synap/examples) Community Section! 
 
 🏆  We will also feature winner's blog in our [AI Developer Blogs](https://developer.synaptics.com/blog) section.
+
+Submission Form : Fill out Project details and GitHub URL [here](https://forms.office.com/r/CgeycJ4HD4).
 
 <br>
 
@@ -19,7 +21,7 @@ Submit your project and have your work featured in our  Official GitHub [Example
 
 1. **Pick a Challenge:** Choose one of the two exciting open-ended tasks below.
 2. **Build & Innovate:** Use **Astra Machina Dev Board** to develop your project.  
-3. **Submit on GitHub:** Fork our [Examples repo](https://github.com/synaptics-synap/examples), create your project, and submit your GitHub Repo link.  
+3. **Submit on GitHub:** Fork our [Examples repo](https://github.com/synaptics-synap/examples), create your project and submit your GitHub Repo link in [Submission Form](https://forms.office.com/r/CgeycJ4HD4).  
 4. **Deadline:** April 6, 2025
 5. **Result:** Top project in each task gets featured in our Examples repo and AI Developer Blogs sections. 
 
@@ -79,7 +81,7 @@ Build on our existing [AI Voice Assistant](https://github.com/dpajak-synaptics/o
 
   - **GIF/Demo Video** – Showcase your project in action!  
 
-3. Submit your GitHub Repo link here.  
+3. Submit your Project details and GitHub Repo URL [here](https://forms.office.com/r/CgeycJ4HD4).  
 
 4. Submit by Deadline:  April 6, 2025
 <br>
