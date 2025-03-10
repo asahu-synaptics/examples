@@ -1,5 +1,7 @@
 # Synaptics Astra SL16xx Series AI Examples
 
+![home](/samples/home.png)
+
 This repository provides AI example applications for the **Synaptics Astra SL16xx** series, covering **computer vision, speech processing, and large language models (LLMs)**. Follow the instructions below to set up your environment and run various AI examples in few minutes.
 
 The examples in this repository are designed to work with Astra SL series processors leveraging NPUs (for SL1680 and SL1640 processors) and GPUs (for SL1620 processor) using Astra Machina Dev Kit. 
@@ -10,6 +12,10 @@ The examples in this repository are designed to work with Astra SL series proces
 > - [Astra](https://www.synaptics.com/products/embedded-processors) – Explore the Astra AI platform.
 > - [Astra Machina](https://www.synaptics.com/products/embedded-processors/astra-machina-foundation-series) – Discover our powerful development kit.
 > - [AI Developer Zone](https://developer.synaptics.com/) – Find step-by-step tutorials and resources.
+
+
+## Setting up Astra Machina Board
+For instructions on how to set up Astra Machina board , see the  [Setting up the hardware](https://synaptics-astra.github.io/doc/v/1.5.0/quickstart/hw_setup.html)  guide.
 
 
 ## 🔧 Installation
@@ -113,7 +119,7 @@ To run large language models such as **Qwen** and **DeepSeek**:
 python3 -m llm.qwen
 #python3 -m llm.deepseek
 ```
----
+![qwen](/samples/qwen.gif)
 
 ### 🔍 Embeddings
 Get a gist for Embeddings and how to generate sentence embeddings using **MiniLM**, a lightweight transformer-based model:
@@ -121,8 +127,7 @@ Get a gist for Embeddings and how to generate sentence embeddings using **MiniLM
 python3 -m embeddings.minilm "synaptics astra example!"
 ```
 
----
-
+ 
 ### 🤖 AI - Text Assistant
 Launch an AI-powered text assistant with Tool calling functionality:
 ```bash
@@ -130,6 +135,15 @@ python3 -m assistant.toolcall
 ```
 
  
+## Running gstreamer example
+Use SyNAP GStreamer Plugins to run Real-time inference on a video input using Python
+
+```bash
+python3 -m examples.infer_video -i /home/root/video.mp4 --fullscreen
+```
+
+![od](/samples/od.gif)
+
 
 ## 📚 Additional Resources
 
@@ -139,3 +153,17 @@ python3 -m assistant.toolcall
 - [GitHub SyNAP C++](https://github.com/synaptics-astra/synap-framework) – Low-level access to our SyNAP C++ AI Framework
 - [GitHub Astra SDK](https://github.com/synaptics-astra) – Get started with the Astra SDK for AI development.
 
+## Contributing
+
+We encourage and appreciate community contributions! Here’s how you can get involved:
+
+- **Contribute to our [Community](./community)** – Share your work and collaborate with other developers.
+- **Suggest Features and Improvements** – Have an idea? Let us know how we can enhance the project.
+- **Report Issues and Bugs** – Help us improve by identifying and reporting any issues.
+
+Your contributions make a difference, and we look forward to your input!
+
+## License
+
+This project is licensed under the **Apache License, Version 2.0**.  
+See the [LICENSE](./LICENSE) file for details.
