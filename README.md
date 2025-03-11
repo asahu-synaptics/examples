@@ -1,54 +1,169 @@
-# Examples
-SyNAP demos, test applications and code snippets
+# Synaptics Astra SL16xx Series AI Examples
 
-## Current Examples
-| Example | Description |
-|---------|-------------|
-| [Real-time Video Inference](video_inference) | Python demos to run real-time video inference via GStreamer on camera, file, or RTSP sources. |
-| [Sending Inference Results over UDP](gst-udp-app) | GStreamer C++ application to send inference results over UDP in real-time. |
+![home](/samples/home.png)
 
-***
+This repository provides AI example applications for the **Synaptics Astra SL16xx** series, covering **computer vision, speech processing, and large language models (LLMs)**. Follow the instructions below to set up your environment and run various AI examples in few minutes.
 
-## Real-time Video Inference
-> [!IMPORTANT]
-> The firmware version on the SL1680 board must be >=1.0.0
+The examples in this repository are designed to work with Astra SL series processors leveraging NPUs (for SL1680 and SL1640 processors) and GPUs (for SL1620 processor) using Astra Machina Dev Kit. 
 
-### Running examples
-Clone the examples repository and navigate to the `video_inference` folder.
-All examples are located in the [`examples`](examples) sub-folder. There are specific examples for each supported input type (camera, file, RTSP) and a more generic example that's compatible with all supported inputs. To run an example:
-```sh
-python3 -m examples.<example>
+
+> **Note:** Learn more about Synaptics Astra by visiting:
+> 
+> - [Astra](https://www.synaptics.com/products/embedded-processors) – Explore the Astra AI platform.
+> - [Astra Machina](https://www.synaptics.com/products/embedded-processors/astra-machina-foundation-series) – Discover our powerful development kit.
+> - [AI Developer Zone](https://developer.synaptics.com/) – Find step-by-step tutorials and resources.
+
+
+## Setting up Astra Machina Board
+For instructions on how to set up Astra Machina board , see the  [Setting up the hardware](https://synaptics-astra.github.io/doc/v/1.5.0/quickstart/hw_setup.html)  guide.
+
+
+## 🔧 Installation
+ 
+
+### Clone the Repository
+
+Clone the repository using the following command:
+
+```bash
+git clone https://github.com/synaptics-synap/examples.git
 ```
-#### Run options
-The examples can also be run with optional input arguments. Here's a few examples:
+Navigate to the Repository Directory:
 
-##### 1. Camera demo with pre-loaded pose model
-```sh
-python3 -m examples.infer_camera \
--m /usr/share/synap/models/object_detection/body_pose/model/yolov8s-pose/model.synap
-```
-
-##### 2. Fullscreen video demo on a specific video file
-```sh
-python3 -m examples.infer_video \
--i /home/root/video.mp4 \
---fullscreen
-```
-
-##### 3. Generic demo with an input source, model and inference parameters
-```sh
-python3 -m examples.infer \
--i /home/root/video.mp4 \
--m /home/root/model.synap \
---input_codec h264 \
---confidence_threshold 0.85 \
---inference_skip 0
+```bash
+cd examples
 ```
 
-The full list of available input options for each demo can be viewed with `python3 -m examples.<example>.py --help`.
+### Setup Python Environment
 
-### Building demos from examples
-The pyz_builder.py script allows you to package examples into self-contained, executable .pyz zip archives, which can be run using python3 <demo>.pyz. For step-by-step packaging instructions, see the [detailed guide on building demos](video_inference/README.md#building-demos-from-examples).
+To get started, set up your Python environment. This step ensures all required dependencies are installed and isolated within a virtual environment:
 
-### Customizing and Extending Examples
-To learn how to modify and expand these examples for your specific needs, check out the [customization and extension guide](video_inference/README.md#customizing-and-extending-examples).
+```bash
+python3 -m venv .venv --system-site-packages
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Install SynapRT 
+[SynapRT](https://github.com/synaptics-synap/synap-rt) Python package allows you to run real-time AI pipelines on your Synaptics Astra board in just a few lines of code:
+
+```bash
+pip install https://github.com/synaptics-synap/synap-rt/releases/download/v0.0.1-preview/synap_rt-0.0.1-py3-none-any.whl
+```
+
+## 🎯 Running AI Examples
+
+### 🖼️ Vision
+To run a YOLOv8-small  image classification model on a Image:
+```bash
+ python3 -m vision.image_class out.jpg
+```
+
+To run a YOLOv8-small body pose model using a connected camera and you can Infer results using :
+```bash
+python3 -m vision.body_pose 'cam'
+```
+![bodypose](/samples/body-pose.gif)
+
+
+ 
+
+### 🗣️ Speech-to-Text
+
+**Moonshine** is an speech-to-text model that provides translation from speech to text.
+
+To transcribe an audio file ( for example`jfk.wav`):
+```bash
+python3 -m speech_to_text.moonshine 'samples/jfk.wav'
+```
+
+To enable real-time speech transcription using a **USB microphone** (such as one from a Webcam or a Headphone):
+```bash
+python3 -m speech_to_text.pipeline
+```
+
+ 
+
+### 🔊 Text-to-Speech
+Convert a given text string into synthetic speech using **Piper**:
+```bash
+python3 -m text_to_speech.piper "synaptics astra example"
+```
+
+### 🚀 Large Language Models (LLMs)
+
+
+##### Install SQLite3 Dependencies
+SQLite3 is required for certain AI model operations. Install it using the following commands:
+```bash
+wget https://synaptics-astra-labs.s3.us-east-1.amazonaws.com/downloads/sqlite3_3.38.5-r0_arm64.deb
+wget https://synaptics-astra-labs.s3.us-east-1.amazonaws.com/downloads/python3-sqlite3_3.10.13-r0_arm64.deb
+dpkg -i python3-sqlite3_3.10.13-r0_arm64.deb sqlite3_3.38.5-r0_arm64.deb
+```
+
+#### 🦙 Install `llama-cpp-python`
+
+This command installs **llama-cpp-python**, which enables running large language models efficiently:
+```bash
+pip install llama-cpp-python
+```
+
+There is also a prebuilt version, this installs faster but lags version and may not support newer models (e.g. deepseek)
+```
+pip install llama-cpp-python   --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+```
+
+To run large language models such as **Qwen** and **DeepSeek**:
+
+```bash
+python3 -m llm.qwen
+#python3 -m llm.deepseek
+```
+![qwen](/samples/qwen.gif)
+
+### 🔍 Embeddings
+Get a gist for Embeddings and how to generate sentence embeddings using **MiniLM**, a lightweight transformer-based model:
+```bash
+python3 -m embeddings.minilm "synaptics astra example!"
+```
+
+ 
+### 🤖 AI - Text Assistant
+Launch an AI-powered text assistant with Tool calling functionality:
+```bash
+python3 -m assistant.toolcall
+```
+
+ 
+## Running gstreamer example
+Use SyNAP GStreamer Plugins to run Real-time inference on a video input using Python
+
+```bash
+python3 -m examples.infer_video -i /home/root/video.mp4 --fullscreen
+```
+
+![od](/samples/od.gif)
+
+
+## 📚 Additional Resources
+
+- [AI Developer Zone](https://developer.synaptics.com/) – Find step-by-step tutorials and resources.
+- [GitHub Synap-RT](https://github.com/synaptics-synap/synap-rt) – ExploreReal-time AI pipelines with Python.
+- [GitHub SyNAP-Python-API](https://github.com/synaptics-synap/synap-python) – Python bindings that closely mirror our SyNAP C++ API.
+- [GitHub SyNAP C++](https://github.com/synaptics-astra/synap-framework) – Low-level access to our SyNAP C++ AI Framework
+- [GitHub Astra SDK](https://github.com/synaptics-astra) – Get started with the Astra SDK for AI development.
+
+## Contributing
+
+We encourage and appreciate community contributions! Here’s how you can get involved:
+
+- **Contribute to our [Community](./community)** – Share your work and collaborate with other developers.
+- **Suggest Features and Improvements** – Have an idea? Let us know how we can enhance the project.
+- **Report Issues and Bugs** – Help us improve by identifying and reporting any issues.
+
+Your contributions make a difference, and we look forward to your input!
+
+## License
+
+This project is licensed under the **Apache License, Version 2.0**.  
+See the [LICENSE](./LICENSE) file for details.
