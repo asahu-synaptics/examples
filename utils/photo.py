@@ -10,6 +10,13 @@ except ImportError:
     GLIB_AVAILABLE = False
     warnings.warn("Unable to import gi, camera detection defaulting to /dev/video7")
 
+try:
+    import cv2
+    CV2_AVAILABLE = True
+except ImportError:
+    CV2_AVAILABLE = False
+    warnings.warn("Unable to import cv2, photo capture may not work properly")
+
 def get_camera_devices(cam_subsys: str = "video4linux") -> list[str]:
     if not GLIB_AVAILABLE:
         return ["/dev/video7"]
@@ -70,6 +77,8 @@ def capture(device=None, filename="out.jpg"):
     try:
         subprocess.run(capture_cmd, capture_output=True, text=True, check=True)
         # print(f"Image saved as {filename}")
+        if CV2_AVAILABLE:
+            cv2.imwrite(filename, cv2.imread(filename))
         return True
     except subprocess.CalledProcessError as e:
         print("Error capturing image:")
