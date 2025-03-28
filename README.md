@@ -41,6 +41,7 @@ To get started, set up your Python environment. This step ensures all required d
 ```bash
 python3 -m venv .venv --system-site-packages
 source .venv/bin/activate
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
