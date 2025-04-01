@@ -1,16 +1,21 @@
-"""Piper Text-to-Speech model using Piper command line tool."""
-
 import os
 import sys
+import argparse
 import hashlib
 from utils.models import download
 
 class TextToSpeech:
-    def __init__(self, onnx_file="en/en_US/lessac/low/en_US-lessac-low.onnx",
-                       json_file="en/en_US/lessac/low/en_US-lessac-low.onnx.json",
-                       output_dir="output"):
-        self.onnx_file = download(repo_id="rhasspy/piper-voices", filename=onnx_file)
-        self.json_file = download(repo_id="rhasspy/piper-voices", filename=json_file)
+    def __init__(self, voice="en_US-lessac-low", output_dir="output"):
+        # Voice must be in the format LOCALE-VOICENAME-STYLE, e.g. en_US-lessac-low
+        parts = voice.split("-")
+        if len(parts) != 3:
+            raise ValueError("Voice must be in format LOCALE-VOICENAME-STYLE, e.g. en_US-lessac-low")
+        locale, voice_name, style = parts
+        short_lang = locale.split("_")[0] if "_" in locale else locale[:2].lower()
+        onnx_file_path = f"{short_lang}/{locale}/{voice_name}/{style}/{voice}.onnx"
+        json_file_path = f"{short_lang}/{locale}/{voice_name}/{style}/{voice}.onnx.json"
+        self.onnx_file = download(repo_id="rhasspy/piper-voices", filename=onnx_file_path)
+        self.json_file = download(repo_id="rhasspy/piper-voices", filename=json_file_path)
         self.output_dir = os.path.join(os.path.dirname(__file__), output_dir)
         os.makedirs(self.output_dir, exist_ok=True)
 
@@ -31,13 +36,14 @@ class TextToSpeech:
         return output_filename
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python script.py 'text to convert'")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Piper Text-to-Speech command line tool.")
+    parser.add_argument("text", type=str, help="Text to convert to speech")
+    parser.add_argument("-v", "--voice", type=str, default="en_US-lessac-low",
+                        help="Voice in format LOCALE-VOICENAME-STYLE (default: en_US-lessac-low)")
+    args = parser.parse_args()
     
-    text = sys.argv[1]
-    tts = TextToSpeech()
-    wav_path = tts.synthesize(text)
+    tts = TextToSpeech(voice=args.voice)
+    wav_path = tts.synthesize(args.text)
     print(f"Audio written to: {wav_path}")
 
 if __name__ == "__main__":

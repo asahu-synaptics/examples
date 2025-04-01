@@ -1,14 +1,15 @@
 import json
 import os
+import sys
 import numpy as np
 from tqdm import tqdm
 from sklearn.metrics.pairwise import cosine_similarity
 from embeddings.multilingual import Embeddings
 
-DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "qa_pairs.json")
+DEFAULT_PATH = os.path.join(os.path.dirname(__file__), "data", "qa_pairs.json")
 
 class Agent:
-    def __init__(self, qa_file=DATA_PATH):
+    def __init__(self, qa_file=DEFAULT_PATH):
         self.embeddings = Embeddings()
         with open(qa_file, "r") as f:
             self.qa_pairs = json.load(f)
@@ -23,8 +24,6 @@ class Agent:
     
     def answer_query(self, query):
         query_emb = self.embeddings.generate(query)
-
-        # Similarity search using cosine similarity
         sims = cosine_similarity([query_emb], self.question_embeddings).flatten()
         best_idx = np.argmax(sims)
         return {
@@ -33,9 +32,14 @@ class Agent:
         }
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        qa_file = sys.argv[1]
+    else:
+        qa_file = DEFAULT_PATH
+
     YELLOW = "\033[93m"
     RESET = "\033[0m"
-    agent = Agent()
+    agent = Agent(qa_file=qa_file)
     print(YELLOW + "Assistant ready. Type your question (or 'exit' to quit):" + RESET)
     while True:
         query = input(YELLOW + "> " + RESET)
