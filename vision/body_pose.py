@@ -7,7 +7,7 @@ from synapRT.pipelines import pipeline
 
 
 def main():
-    ws_server = WebSockets(port=6789)
+    ws_server = WebSockets(port=6789,index="./vision/index.html")
     ws_server.start()
 
     def handle_results(results, inference_time):
