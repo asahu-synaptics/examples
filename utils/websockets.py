@@ -4,6 +4,7 @@ import subprocess
 import re
 from websocket_server import WebsocketServer
 
+
 class WebSockets:
     def __init__(self, host="0.0.0.0", port=6789, loglevel=0):
         """
@@ -16,7 +17,9 @@ class WebSockets:
         self.host = host
         self.port = port
         self.loglevel = loglevel
-        self.server = WebsocketServer(host=self.host, port=self.port, loglevel=self.loglevel)
+        self.server = WebsocketServer(
+            host=self.host, port=self.port, loglevel=self.loglevel
+        )
         self.connected_clients = []
         self.clients_lock = threading.Lock()
         self.thread = None
@@ -86,7 +89,7 @@ class WebSockets:
         try:
             # Run "ifconfig eth0" and capture its output
             output = subprocess.check_output(["ifconfig", "eth0"]).decode("utf-8")
-            
+
             # Search for the line that includes 'inet addr:'
             # Example line: "inet addr:10.3.10.105  Bcast:10.3.11.255  Mask:255.255.254.0"
             match = re.search(r"inet addr:(\S+)", output)
@@ -97,5 +100,3 @@ class WebSockets:
         except subprocess.CalledProcessError:
             # ifconfig command failed (interface may not exist)
             return None
-
-

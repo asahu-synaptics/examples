@@ -5,10 +5,14 @@ import sys
 import hashlib
 from utils.models import download
 
+
 class TextToSpeech:
-    def __init__(self, onnx_file="en/en_US/lessac/low/en_US-lessac-low.onnx",
-                       json_file="en/en_US/lessac/low/en_US-lessac-low.onnx.json",
-                       output_dir="output"):
+    def __init__(
+        self,
+        onnx_file="en/en_US/lessac/low/en_US-lessac-low.onnx",
+        json_file="en/en_US/lessac/low/en_US-lessac-low.onnx.json",
+        output_dir="output",
+    ):
         self.onnx_file = download(repo_id="rhasspy/piper-voices", filename=onnx_file)
         self.json_file = download(repo_id="rhasspy/piper-voices", filename=json_file)
         self.output_dir = os.path.join(os.path.dirname(__file__), output_dir)
@@ -22,7 +26,7 @@ class TextToSpeech:
         if output_filename is None:
             chk = self.file_checksum(text + self.onnx_file)
             output_filename = os.path.join(self.output_dir, f"speech-output-{chk}.wav")
-        
+
         if os.path.exists(output_filename):
             return output_filename
 
@@ -30,15 +34,17 @@ class TextToSpeech:
         os.system(cmd)
         return output_filename
 
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python script.py 'text to convert'")
         sys.exit(1)
-    
+
     text = sys.argv[1]
     tts = TextToSpeech()
     wav_path = tts.synthesize(text)
     print(f"Audio written to: {wav_path}")
+
 
 if __name__ == "__main__":
     main()
