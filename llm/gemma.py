@@ -2,8 +2,8 @@ from llama_cpp import Llama
 from utils.models import download
 
 model_path = download(
-	repo_id="Qwen/Qwen1.5-0.5B-Chat-GGUF",
-	filename="qwen1_5-0_5b-chat-q5_k_m.gguf",
+	repo_id="unsloth/gemma-3-1b-it-GGUF",
+	filename="gemma-3-1b-it-BF16.gguf",
 )    
 
 llm = Llama(
@@ -12,7 +12,7 @@ llm = Llama(
 )
 
 response_stream = llm.create_chat_completion(
-    messages=[{"role": "user", "content": "告诉我有关 synaptics Inc 的信息"}],
+    messages=[{"role": "user", "content": "Tell me briefly about the benefits of Edge AI"}],
     stream=True  # Enable streaming
 )
 
