@@ -30,7 +30,7 @@ For instructions on how to set up Astra Machina board , see the  [Setting up the
 Clone the repository using the following command:
 
 ```bash
-git clone https://github.com/synaptics-synap/examples.git
+git clone https://github.com/asahu-synaptics/examples.git
 ```
 Navigate to the Repository Directory:
 
